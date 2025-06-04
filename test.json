@@ -1,0 +1,47 @@
+[
+  {
+    "name": "example",
+    "email": "user@example.com",
+    "password": "123456",
+    "phone": "123456",
+    "role": "user"
+  },
+
+  {
+    "email": "shorif@gmail.com",
+    "password": "123456"
+  },
+  {
+    "email": "user@example.com",
+    "password": "123456"
+  },
+  {
+    "email": "x@gmail.com",
+    "password": "123456"
+  }
+]
+
+{userId: '68379f5cc050945bacb63dec', itemName: 'Domain Registration', item: 'domain', price: 60, domain: 'example.com'}
+
+/*
+
+ let token;
+  let authheader = req.headers.Authorization || req.headers.authorization;
+  const tokenFromReq = req.cookies.accessToken;
+if (!tokenFromReq) {
+    if (renewToken(req, res)) {
+      next();
+    }
+  } else {
+    try {
+      const decode = jwt.verify(tokenFromReq, process.env.JWT_SECRET);
+      req.user = decode;
+      console.log("The decoded user is : ", req.user);
+      next();
+    } catch (error) {
+      res.status(400).json({ message: "token is not valid" });
+    }
+  }
+
+
+*/
