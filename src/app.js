@@ -12,7 +12,10 @@ const port = process.env.PORT || 3000;
 
 //Middleware
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+// app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+app.use(
+  cors({ origin: "https://kahfweb-server.vercel.app", credentials: true })
+);
 app.use(cookieParser());
 
 // Routes
