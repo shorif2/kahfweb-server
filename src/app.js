@@ -16,7 +16,7 @@ app.use(express.json());
 
 // app.use(cors({ origin: "http://localhost:8080", credentials: true }));
 app.use(
-  cors({ origin: "https://kahfweb-server.vercel.app", credentials: true })
+  cors({ origin: "https://kahfweb-client.vercel.app", credentials: true })
 );
 app.use(cookieParser());
 
