@@ -14,10 +14,27 @@ const port = process.env.PORT || 3000;
 //Middleware
 app.use(express.json());
 
-// app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://kahfweb-client.vercel.app",
+];
 app.use(
-  cors({ origin: "https://kahfweb-client.vercel.app", credentials: true })
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
+
+// app.use(cors({ origin: "http://localhost:8080", credentials: true }));
+// app.use(
+//   cors({ origin: "https://kahfweb-client.vercel.app", credentials: true })
+// );
 app.use(cookieParser());
 
 // Routes

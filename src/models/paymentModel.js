@@ -6,7 +6,7 @@ const paymentSchema = new mongoose.Schema(
       require: true,
     },
     isActive: {
-      type: String,
+      type: Boolean,
       require: true,
     },
     currency: {
@@ -14,7 +14,7 @@ const paymentSchema = new mongoose.Schema(
       require: true,
     },
     payAmount: {
-      type: String,
+      type: Number,
       require: true,
     },
     instructions: {
@@ -22,7 +22,7 @@ const paymentSchema = new mongoose.Schema(
       require: true,
     },
     accountNumber: {
-      type: String,
+      type: Number,
       require: true,
     },
     name: {
