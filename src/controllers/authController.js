@@ -46,14 +46,14 @@ const login = async (req, res) => {
         const { accessToken, refreshToken } = await generateTokens(user);
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: true,
+          sameSite: "none",
           maxAge: parseInt(process.env.ACCESS_TOKEN_MAX_AGE || "600000"),
         });
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          secure: false,
-          sameSite: process.env.NODE_ENV === "production",
+          secure: true,
+          sameSite: "none",
           maxAge: parseInt(process.env.REFRESH_TOKEN_MAX_AGE || "3600000"),
         });
 

@@ -15,7 +15,6 @@ const verifyToken = async (req, res, next) => {
   }
 
   try {
-    console.log("hit");
     const decoded = jwt.verify(tokenFromReq, process.env.JWT_SECRET);
     req.user = decoded;
     // console.log("The decoded user is:", req.user);
@@ -79,8 +78,8 @@ const renewToken = (req, res) => {
       res.cookie("accessToken", newAccessToken, {
         httpOnly: true,
         maxAge: 60000,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
       });
 
       req.user = decoded; // Set user from refresh token
