@@ -17,7 +17,7 @@ const verifyToken = async (req, res, next) => {
   try {
     const decoded = jwt.verify(tokenFromReq, process.env.JWT_SECRET);
     req.user = decoded;
-    console.log("The decoded user is:", req.user);
+    // console.log("The decoded user is:", req.user);
     next();
   } catch (error) {
     // If token is invalid, try to renew

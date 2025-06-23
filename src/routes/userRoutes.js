@@ -104,4 +104,40 @@ router.get(
   }
 );
 
+router.patch(
+  "/user/:id",
+  verifyToken,
+  authorizedRoles("admin", "manager"),
+  async (req, res) => {
+    try {
+      const userId = req.params.id;
+
+      // Optional: Check if the ID is valid
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+
+      const updates = req.body;
+      const updatedUser = await userModal.findByIdAndUpdate(
+        userId,
+        { $set: updates },
+        {
+          new: true,
+          runValidators: true,
+          fields: "-password -__v -createdAt -updatedAt",
+        }
+      );
+
+      if (!updatedUser) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json({ success: true, user: updatedUser });
+    } catch (err) {
+      console.error("Error updating user:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
+
 module.exports = router;

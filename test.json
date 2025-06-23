@@ -18,10 +18,20 @@
   {
     "email": "x@gmail.com",
     "password": "123456"
+  },
+
+  {
+    "userId": "68376471f4bc51dbb26c9933",
+    "domain": "exmple.com",
+    "item": "domain",
+    "price": 60,
+    "itemName": "domain registration"
+  },
+  {
+    "id": "68379f5cc050945bacb63dec",
+    "email": "user@example.com"
   }
 ]
-
-{userId: '68379f5cc050945bacb63dec', itemName: 'Domain Registration', item: 'domain', price: 60, domain: 'example.com'}
 
 /*
 

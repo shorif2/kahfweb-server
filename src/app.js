@@ -5,6 +5,7 @@ const dbConnect = require("./config/dbConnect.js");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const paymentRoute = require("./routes/paymentRoute");
 const cookieParser = require("cookie-parser");
 dbConnect();
 const app = express();
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 //Middleware
 app.use(express.json());
+
 // app.use(cors({ origin: "http://localhost:8080", credentials: true }));
 app.use(
   cors({ origin: "https://kahfweb-server.vercel.app", credentials: true })
@@ -22,6 +24,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/payment", paymentRoute);
 
 //Home route
 app.get("/", (req, res) => {
