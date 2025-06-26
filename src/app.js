@@ -12,6 +12,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 //Middleware
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(express.json());
 
 const allowedOrigins = [
@@ -41,7 +42,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/order", orderRoutes);
-app.use("/api/payment", paymentRoute);
+app.use("/api/payment-method", paymentRoute);
 
 //Home route
 app.get("/", (req, res) => {
