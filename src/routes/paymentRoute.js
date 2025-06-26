@@ -1,11 +1,8 @@
 const express = require("express");
 const verifyToken = require("../middlewares/authMiddleware");
 const authorizedRoles = require("../middlewares/roleMiddleware");
-const userModal = require("../models/userModel");
-const mongoose = require("mongoose");
-const orderModel = require("../models/orderModel");
+
 const paymentModel = require("../models/paymentModel");
-const cloudinary = require("../config/cloudinary");
 
 const router = express.Router();
 
@@ -42,6 +39,49 @@ router.post(
       const newPaymentMethod = new paymentModel(req.body);
       await newPaymentMethod.save();
 
+      res.status(201).json({ success: true, data: newPaymentMethod });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ success: false, message: "Upload failed", error: err });
+    }
+  }
+);
+
+router.patch(
+  "/:methodId",
+  verifyToken,
+  authorizedRoles("admin", "manager"),
+
+  async (req, res) => {
+    try {
+      const methodId = req.params.methodId;
+      console.log(req.params);
+      const newPaymentMethod = await paymentModel.findByIdAndUpdate(
+        methodId,
+        req.body,
+        { new: true }
+      );
+
+      res.status(201).json({ success: true, data: newPaymentMethod });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ success: false, message: "Upload failed", error: err });
+    }
+  }
+);
+router.delete(
+  "/:methodId",
+  verifyToken,
+  authorizedRoles("admin", "manager"),
+
+  async (req, res) => {
+    try {
+      const methodId = req.params.methodId;
+
+      const newPaymentMethod = await paymentModel.findByIdAndDelete(methodId);
+      console.log(methodId);
       res.status(201).json({ success: true, data: newPaymentMethod });
     } catch (err) {
       res
