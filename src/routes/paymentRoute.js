@@ -20,7 +20,20 @@ router.get("/", verifyToken, authorizedRoles("admin"), async (req, res) => {
   }
 });
 
-// admin and manager
+router.get("/active", async (req, res) => {
+  try {
+    const paymentMethod = await paymentModel.find({ isActive: true });
+
+    res.json({ success: true, data: paymentMethod });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "PaymentMethod Ritive Failed!",
+      error: err,
+    });
+  }
+});
+
 router.post(
   "/",
   verifyToken,
@@ -71,6 +84,40 @@ router.patch(
     }
   }
 );
+// update payment method status
+router.patch(
+  "/update/:methodId",
+  verifyToken,
+  authorizedRoles("admin", "manager"),
+
+  async (req, res) => {
+    try {
+      const methodId = req.params.methodId;
+      const bulkOps = [
+        {
+          updateMany: {
+            filter: { _id: { $ne: methodId } },
+            update: { $set: { isActive: false } },
+          },
+        },
+        {
+          updateOne: {
+            filter: { _id: methodId },
+            update: { $set: { isActive: true } },
+          },
+        },
+      ];
+      const updated = await paymentModel.bulkWrite(bulkOps);
+
+      res.status(201).json({ success: true, data: updated });
+    } catch (err) {
+      res
+        .status(500)
+        .json({ success: false, message: "Upload failed", error: err });
+    }
+  }
+);
+
 router.delete(
   "/:methodId",
   verifyToken,
