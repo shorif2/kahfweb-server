@@ -20,7 +20,6 @@ const orderSchema = new mongoose.Schema(
     domain: {
       type: String,
       require: true,
-      unique: true,
     },
     orderDate: {
       type: String,

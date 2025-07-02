@@ -5,9 +5,13 @@ const { generateTokens } = require("../utils/authHandler");
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, role, phone } = req.body;
+    const { name, email, password, phone, address } = req.body;
+
+    if (!name || !email || !phone || !address) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     const pass = password || "123456";
-    // to do - check already user exist or not 40 min
+    // to do - check already user exist or not
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(500).json({ message: `User already exist` });
@@ -19,9 +23,12 @@ const register = async (req, res) => {
       email,
       password: hashedPassword,
       phone,
+      address,
     });
     await newUser.save();
-    res.status(201).json({ message: `User registnerd with username ${name}` });
+    res
+      .status(201)
+      .json({ message: `User register successfully with username ${name}` });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: `Something went wrong ${error.message}` });

@@ -105,17 +105,26 @@ router.get("/summary", async (req, res) => {
   try {
     const now = new Date();
     const sevenDaysLater = new Date();
-    sevenDaysLater.setDate(now.getDate() + 15);
+    sevenDaysLater.setDate(now.getDate() + 30);
 
-    const [totalUsers, activeDomains, activeHostings, allOrders] =
-      await Promise.all([
-        userModal.countDocuments(),
-        OrderModel.countDocuments({ item: "domain", status: "active" }),
-        OrderModel.countDocuments({ item: "hosting", status: "active" }),
-        OrderModel.find()
-          .select("-__v")
-          .populate("userId", "-password -__v -createdAt -updatedAt"),
-      ]);
+    const [
+      totalUsers,
+      activeDomainOnly,
+      activeHostingOnly,
+      activeBundles,
+      allOrders,
+    ] = await Promise.all([
+      userModal.countDocuments(),
+      OrderModel.countDocuments({ item: "domain", status: "active" }),
+      OrderModel.countDocuments({ item: "hosting", status: "active" }),
+      OrderModel.countDocuments({ item: "bundle", status: "active" }),
+      OrderModel.find()
+        .select("-__v")
+        .populate("userId", "-password -__v -createdAt -updatedAt"),
+    ]);
+
+    const activeDomains = activeDomainOnly + activeBundles;
+    const activeHostings = activeHostingOnly + activeBundles;
 
     // Manually filter orders that expire within 30 days
     const expireSoon = allOrders.filter((order) => {
