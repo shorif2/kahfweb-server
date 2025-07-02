@@ -140,4 +140,35 @@ router.patch(
   }
 );
 
+// Update user status
+router.patch("/block-user/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({ message: "Status is required." });
+    }
+
+    const updatedUser = await userModal.findByIdAndUpdate(
+      userId,
+      { status },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.json({
+      message: "User status updated successfully.",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update user status.", error: error.message });
+  }
+});
+
 module.exports = router;

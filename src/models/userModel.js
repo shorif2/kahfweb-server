@@ -15,6 +15,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    status: {
+      type: String,
+      default: "active",
+    },
     role: {
       type: String,
       default: "user",
