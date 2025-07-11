@@ -84,36 +84,37 @@ router.patch(
     }
   }
 );
-// update payment method status
+// toggle payment method status
 router.patch(
   "/update/:methodId",
   verifyToken,
   authorizedRoles("admin", "manager"),
-
   async (req, res) => {
     try {
-      const methodId = req.params.methodId;
-      const bulkOps = [
-        {
-          updateMany: {
-            filter: { _id: { $ne: methodId } },
-            update: { $set: { isActive: false } },
-          },
-        },
-        {
-          updateOne: {
-            filter: { _id: methodId },
-            update: { $set: { isActive: true } },
-          },
-        },
-      ];
-      const updated = await paymentModel.bulkWrite(bulkOps);
+      const updatedMethod = await paymentModel.findByIdAndUpdate(
+        req.params.methodId,
+        [{ $set: { isActive: { $not: "$isActive" } } }],
+        { new: true }
+      );
 
-      res.status(201).json({ success: true, data: updated });
+      if (!updatedMethod) {
+        return res.status(404).json({
+          success: false,
+          message: "Payment method not found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: updatedMethod,
+        message: `Payment method ${
+          updatedMethod.isActive ? "activated" : "deactivated"
+        } successfully`,
+      });
     } catch (err) {
       res
         .status(500)
-        .json({ success: false, message: "Upload failed", error: err });
+        .json({ success: false, message: "Status update failed", error: err });
     }
   }
 );

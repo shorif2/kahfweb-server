@@ -6,6 +6,7 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const paymentRoute = require("./routes/paymentRoute");
+const pricingRoutes = require("./routes/pricingRoutes");
 const cookieParser = require("cookie-parser");
 dbConnect();
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/order", orderRoutes);
 app.use("/api/payment-method", paymentRoute);
+app.use("/api/pricing", pricingRoutes);
 
 //Home route
 app.get("/", (req, res) => {
